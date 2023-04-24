@@ -66,11 +66,28 @@ public class ZippoTest {
                // pm.response.json().id -> body.id
         ;
     }
+//
+//    PM                            RestAssured
+//    body.country                  body("country")
+//    body.'post code'              body("post code")
+//    body.places[0].'place name'   body("places[0].'place name'")
+//    body.places.'place name'      body("places.'place name'")
+//    bütün place nameleri bir arraylist olarak verir
+//    https://jsonpathfinder.com/
 
+    @Test
+    public void checkstateInResponseBody(){
+        given()
 
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
 
-
-
+                .then()
+                //.log().body()
+                .statusCode(200)
+                .body("places[0].state", equalTo("California"))
+        ;
+    }
 
 
 
