@@ -97,14 +97,26 @@ public class ZippoTest {
                 .get("http://api.zippopotam.us/tr/01000")
 
                 .then()
-                .log().body()
+                //.log().body()
                 .statusCode(200)
                 .body("places.'place name'", hasItem("Dörtağaç Köyü"))
                 // bütün place name lerin herhangi birinde Dörtağaç Köyü varmı
         ;
     }
 
+    @Test
+    public void bodyArrayHasSizeTest(){
+        given()
 
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+
+                .then()
+                //.log().body()
+                .statusCode(200)
+                .body("places", hasSize(1))
+        ;
+    }
 
 
 
