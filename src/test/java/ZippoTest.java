@@ -135,6 +135,35 @@ public class ZippoTest {
     }
 
 
+    @Test
+    public void pathParamTest()
+    {
+        given()
+                .pathParam("ulke","us")
+                .pathParam("postaKod", 90210)
+                .log().uri() // request Link
+
+                .when()
+                .get("http://api.zippopotam.us/{ulke}/{postaKod}")
+
+
+                .then()
+                .statusCode(200)
+                //.log().body()
+
+        ;
+    }
+
+
+
+
+
+
+
+
+
+
+
 
 
 
