@@ -89,6 +89,20 @@ public class ZippoTest {
         ;
     }
 
+    @Test
+    public void checkHasItemy(){
+        given()
+
+                .when()
+                .get("http://api.zippopotam.us/tr/01000")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .body("places.'place name'", hasItem("Dörtağaç Köyü"))
+                // bütün place name lerin herhangi birinde Dörtağaç Köyü varmı
+        ;
+    }
 
 
 
