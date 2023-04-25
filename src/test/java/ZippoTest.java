@@ -1,4 +1,5 @@
 import Model.Location;
+import Model.Place;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.builder.ResponseSpecBuilder;
 import io.restassured.filter.log.LogDetail;
@@ -374,13 +375,18 @@ public class ZippoTest {
                 .get("http://api.zippopotam.us/us/90210")
 
                 .then()
-                .log().body()
+                //.log().body()
                 .extract().body().as(Location.class)
                 // // Location şablonuna
         ;
 
         System.out.println("locationNesnesi.getCountry() = " +
                 locationNesnesi.getCountry());
+
+        for(Place p: locationNesnesi.getPlaces())
+            System.out.println("p = " + p);
+
+        System.out.println(locationNesnesi.getPlaces().get(0).getPlacename());
     }
 
 

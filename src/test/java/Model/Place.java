@@ -1,5 +1,8 @@
 package Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
 public class Place {
     String placename;
     String longitude;
@@ -11,6 +14,7 @@ public class Place {
         return placename;
     }
 
+    @JsonProperty("place name")
     public void setPlacename(String placename) {
         this.placename = placename;
     }
@@ -35,6 +39,8 @@ public class Place {
         return stateabbreviation;
     }
 
+
+    @JsonProperty("state abbreviation")
     public void setStateabbreviation(String stateabbreviation) {
         this.stateabbreviation = stateabbreviation;
     }
@@ -45,5 +51,16 @@ public class Place {
 
     public void setLatitude(String latitude) {
         this.latitude = latitude;
+    }
+
+    @Override
+    public String toString() {
+        return "Place{" +
+                "placename='" + placename + '\'' +
+                ", longitude='" + longitude + '\'' +
+                ", state='" + state + '\'' +
+                ", stateabbreviation='" + stateabbreviation + '\'' +
+                ", latitude='" + latitude + '\'' +
+                '}';
     }
 }
