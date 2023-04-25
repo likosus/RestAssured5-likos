@@ -4,6 +4,7 @@ import io.restassured.filter.log.LogDetail;
 import io.restassured.http.ContentType;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -224,7 +225,7 @@ public class ZippoTest {
 
 
     @Test
-    public void test1()
+    public void requestResponseSpecificationn()
     {
         // https://gorest.co.in/public/v1/users?page=3
 
@@ -240,9 +241,27 @@ public class ZippoTest {
         ;
     }
 
+    @Test
+    public void extractingJsonPath(){
 
+      String countryName=
+              given()
+                      .when()
+                      .get("http://api.zippopotam.us/us/90210")
 
+                      .then()
+                      .extract().path("country")
+              ;
 
+        System.out.println("countryName = " + countryName);
+        Assert.assertEquals(countryName,"United States");
+    }
+
+    @Test
+    public void extractingJsonPath2() {
+      //placeName
+
+    }
 
 
 
