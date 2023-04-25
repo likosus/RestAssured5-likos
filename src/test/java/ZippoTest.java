@@ -394,15 +394,22 @@ public class ZippoTest {
     public void extractPOJO_Soru(){
         // aşağıdaki endpointte(link)  Dörtağaç Köyü ait diğer bilgileri yazdırınız
 
-
+        Location adana=
         given()
                 .when()
                 .get("http://api.zippopotam.us/tr/01000")
 
                 .then()
-                .log().body()
+                //.log().body()
                 .statusCode(200)
+                .extract().body().as(Location.class)
         ;
+
+        for(Place p: adana.getPlaces())
+            if (p.getPlacename().equalsIgnoreCase("Dörtağaç Köyü"))
+            {
+                System.out.println("p = " + p);
+            }
     }
 
 
