@@ -8,6 +8,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -286,7 +288,7 @@ public class ZippoTest {
                 .get("https://gorest.co.in/public/v1/users")
 
                 .then()
-                //.log().body()
+                .log().body()
                 .statusCode(200)
                 .extract().path("meta.pagination.limit")
         ;
@@ -294,6 +296,41 @@ public class ZippoTest {
         System.out.println("limit = " + limit);
     }
 
+    @Test
+    public void extractingJsonPath4() {
+        // https://gorest.co.in/public/v1/users  dönen değerdeki bütün idleri yazdırınız.
+
+        List<Integer> idler=
+        given()
+
+                .when()
+                .get("https://gorest.co.in/public/v1/users")
+
+                .then()
+                .statusCode(200)
+                .extract().path("data.id"); // bütün id leri ver
+        ;
+
+        System.out.println("idler = " + idler);
+    }
+
+    @Test
+    public void extractingJsonPath5() {
+        // https://gorest.co.in/public/v1/users  dönen değerdeki bütün name lei yazdırınız.
+
+        List<String> names=
+                given()
+
+                        .when()
+                        .get("https://gorest.co.in/public/v1/users")
+
+                        .then()
+                        .statusCode(200)
+                        .extract().path("data.name"); // bütün id leri ver
+        ;
+
+        System.out.println("names = " + names);
+    }
 
 
 
