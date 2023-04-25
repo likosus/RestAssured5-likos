@@ -367,8 +367,8 @@ public class ZippoTest {
 
 
     @Test
-    public void extractJsonAll()
-    {
+    public void extractJsonAll_POJO()
+    {  // POJO : JSON nesnesi : locationNesnesi
         Location locationNesnesi=
         given()
                 .when()
@@ -389,6 +389,21 @@ public class ZippoTest {
         System.out.println(locationNesnesi.getPlaces().get(0).getPlacename());
     }
 
+
+    @Test
+    public void extractPOJO_Soru(){
+        // aşağıdaki endpointte(link)  Dörtağaç Köyü ait diğer bilgileri yazdırınız
+
+
+        given()
+                .when()
+                .get("http://api.zippopotam.us/tr/01000")
+
+                .then()
+                .log().body()
+                .statusCode(200)
+        ;
+    }
 
 
 
