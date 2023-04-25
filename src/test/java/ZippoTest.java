@@ -279,7 +279,19 @@ public class ZippoTest {
     public void extractingJsonPath3() {
         // https://gorest.co.in/public/v1/users  dönen değerdeki limit bilgisini yazdırınız.
 
+        int limit=
+        given()
 
+                .when()
+                .get("https://gorest.co.in/public/v1/users")
+
+                .then()
+                //.log().body()
+                .statusCode(200)
+                .extract().path("meta.pagination.limit")
+        ;
+
+        System.out.println("limit = " + limit);
     }
 
 
