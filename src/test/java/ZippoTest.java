@@ -250,6 +250,7 @@ public class ZippoTest {
                       .get("http://api.zippopotam.us/us/90210")
 
                       .then()
+                      //.log().body()
                       .extract().path("country")
               ;
 
@@ -260,10 +261,26 @@ public class ZippoTest {
     @Test
     public void extractingJsonPath2() {
       //placeName
+        String placeName=
+                given()
+                        .when()
+                        .get("http://api.zippopotam.us/us/90210")
 
+                        .then()
+                        .log().body()
+                        .extract().path("places[0].'place name'")  // places[0]['place name']
+                ;
+
+        System.out.println("placeName = " + placeName);
+        Assert.assertEquals(placeName,"Beverly Hills");
     }
 
+    @Test
+    public void extractingJsonPath3() {
+        // https://gorest.co.in/public/v1/users  dönen değerdeki limit bilgisini yazdırınız.
 
+
+    }
 
 
 
