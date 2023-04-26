@@ -4,6 +4,9 @@ import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -12,7 +15,7 @@ public class GoRestUsersTests {
     int userID;
 
     @Test
-    public void createUser() {
+    public void createUserJson() {
         // POST https://gorest.co.in/public/v2/users
         // "Authorization: Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d"
         // {"name":"{{$randomFullName}}", "gender":"male", "email":"{{$randomEmail}}", "status":"active"}
@@ -24,6 +27,64 @@ public class GoRestUsersTests {
                         .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
                         .contentType(ContentType.JSON) // gönderilecek data JSON
                         .body("{\"name\":\""+rndFullname+"\", \"gender\":\"male\", \"email\":\""+rndEmail+"\", \"status\":\"active\"}")
+                        //.log().uri()
+                        //.log().body()
+
+                        .when()
+                        .post("https://gorest.co.in/public/v2/users")
+
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .contentType(ContentType.JSON)
+                        .extract().path("id");
+    }
+
+    @Test
+    public void createUserMap() {
+        String rndFullname = randomUretici.name().fullName();
+        String rndEmail = randomUretici.internet().emailAddress();
+
+        Map<String,String> newUser=new HashMap<>();
+        newUser.put("name",rndFullname);
+        newUser.put("gender","male");
+        newUser.put("email",rndEmail);
+        newUser.put("status","active");
+
+        userID =
+                given()
+                        .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
+                        .contentType(ContentType.JSON) // gönderilecek data JSON
+                        .body(newUser)
+                        //.log().uri()
+                        //.log().body()
+
+                        .when()
+                        .post("https://gorest.co.in/public/v2/users")
+
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .contentType(ContentType.JSON)
+                        .extract().path("id");
+    }
+
+    @Test
+    public void createUserClass() {
+        String rndFullname = randomUretici.name().fullName();
+        String rndEmail = randomUretici.internet().emailAddress();
+
+        User newUser=new User();
+        newUser.name=rndFullname;
+        newUser.gender="male";
+        newUser.email=rndEmail;
+        newUser.status="active";
+
+        userID =
+                given()
+                        .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
+                        .contentType(ContentType.JSON) // gönderilecek data JSON
+                        .body(newUser)
                         //.log().uri()
                         //.log().body()
 
