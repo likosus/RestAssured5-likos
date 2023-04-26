@@ -156,11 +156,13 @@ public class GoRestUsersTests {
         ;
     }
 
+    //TODO
     @Test(dependsOnMethods = "updateUser")
     public void deleteUser() {
 
     }
 
+    //TODO
     @Test(dependsOnMethods = "deleteUser")
     public void deleteUserNegative() {
 
