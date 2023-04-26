@@ -1,7 +1,10 @@
 package GoRest;
 
 import com.github.javafaker.Faker;
+import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.http.ContentType;
+import io.restassured.specification.RequestSpecification;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -14,6 +17,17 @@ public class GoRestUsersTests {
     Faker randomUretici=new Faker();
     int userID;
 
+    RequestSpecification reqSpec;
+    @BeforeClass
+    public void setup(){
+        reqSpec = new RequestSpecBuilder()
+               .addHeader("Authorization", "Bearer e4b22047188da067d3bd95431d94259f63896347f9864894a0a7013ee5f9c703")
+               .setContentType(ContentType.JSON)
+               .build();
+
+    }
+
+
     @Test(enabled = false)
     public void createUserJson() {
         // POST https://gorest.co.in/public/v2/users
@@ -24,8 +38,7 @@ public class GoRestUsersTests {
 
         userID =
                 given()
-                        .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
-                        .contentType(ContentType.JSON) // gönderilecek data JSON
+                        .spec(reqSpec)
                         .body("{\"name\":\""+rndFullname+"\", \"gender\":\"male\", \"email\":\""+rndEmail+"\", \"status\":\"active\"}")
                         //.log().uri()
                         //.log().body()
@@ -53,8 +66,7 @@ public class GoRestUsersTests {
 
         userID =
                 given()
-                        .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
-                        .contentType(ContentType.JSON) // gönderilecek data JSON
+                        .spec(reqSpec)
                         .body(newUser)
                         //.log().uri()
                         //.log().body()
@@ -82,8 +94,7 @@ public class GoRestUsersTests {
 
         userID =
                 given()
-                        .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
-                        .contentType(ContentType.JSON) // gönderilecek data JSON
+                        .spec(reqSpec)
                         .body(newUser)
                         //.log().uri()
                         //.log().body()
@@ -102,7 +113,7 @@ public class GoRestUsersTests {
     public void getUserByID() {
 
         given()
-                .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
+                .spec(reqSpec)
 
                 .when()
                 .get("https://gorest.co.in/public/v2/users/"+userID)
@@ -113,12 +124,27 @@ public class GoRestUsersTests {
                 .contentType(ContentType.JSON)
                 .body("id",equalTo(userID))
         ;
-
     }
 
-    @Test
+    @Test(dependsOnMethods = "getUserByID")
     public void updateUser() {
 
+        Map<String,String> updateUser=new HashMap<>();
+        updateUser.put("name","ismet temur");
+
+        given()
+                .spec(reqSpec)
+                .body(updateUser)
+
+                .when()
+                .put("https://gorest.co.in/public/v2/users/"+userID)
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .body("id", equalTo(userID))
+                .body("name", equalTo("ismet temur"))
+        ;
     }
 
     @Test
