@@ -8,25 +8,24 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class GoRestUsersTests {
-
+    Faker randomUretici=new Faker();
+    int userID;
 
     @Test
     public void createUser() {
         // POST https://gorest.co.in/public/v2/users
         // "Authorization: Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d"
         // {"name":"{{$randomFullName}}", "gender":"male", "email":"{{$randomEmail}}", "status":"active"}
-        Faker randomUretici=new Faker();
-
         String rndFullname = randomUretici.name().fullName();
         String rndEmail = randomUretici.internet().emailAddress();
 
-        int userID =
+        userID =
                 given()
                         .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
                         .contentType(ContentType.JSON) // gönderilecek data JSON
                         .body("{\"name\":\""+rndFullname+"\", \"gender\":\"male\", \"email\":\""+rndEmail+"\", \"status\":\"active\"}")
-                        .log().uri()
-                        .log().body()
+                        //.log().uri()
+                        //.log().body()
 
                         .when()
                         .post("https://gorest.co.in/public/v2/users")
@@ -38,8 +37,21 @@ public class GoRestUsersTests {
                         .extract().path("id");
     }
 
-    @Test
+    @Test(dependsOnMethods = "createUser")
     public void getUserByID() {
+
+        given()
+                .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
+
+                .when()
+                .get("https://gorest.co.in/public/v2/users/"+userID)
+
+                .then()
+                .log().body()
+                .statusCode(200)
+                .contentType(ContentType.JSON)
+                .body("id",equalTo(userID))
+        ;
 
     }
 
