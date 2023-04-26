@@ -1,5 +1,6 @@
 package GoRest;
 
+import com.github.javafaker.Faker;
 import io.restassured.http.ContentType;
 import org.testng.annotations.Test;
 
@@ -10,49 +11,52 @@ public class GoRestUsersTests {
 
 
     @Test
-    public void createUser(){
-      // POST https://gorest.co.in/public/v2/users
-      // "Authorization: Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d"
-      // {"name":"{{$randomFullName}}", "gender":"male", "email":"{{$randomEmail}}", "status":"active"}
+    public void createUser() {
+        // POST https://gorest.co.in/public/v2/users
+        // "Authorization: Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d"
+        // {"name":"{{$randomFullName}}", "gender":"male", "email":"{{$randomEmail}}", "status":"active"}
+        Faker randomUretici=new Faker();
 
-      int userID=
-      given()
-              .header("Authorization","Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d")
-              .contentType(ContentType.JSON) // gönderilecek data JSON
-              .body("{\"name\":\"ismet temur1\", \"gender\":\"male\", \"email\":\"ismet1@gmail.com\", \"status\":\"active\"}")
-              .log().uri()
-              .log().body()
+        String rndFullname = randomUretici.name().fullName();
+        String rndEmail = randomUretici.internet().emailAddress();
 
-              .when()
-              .post("https://gorest.co.in/public/v2/users")
+        int userID =
+                given()
+                        .header("Authorization", "Bearer cefb893f50cf78daf593cb194b2d219e0419a4bb10b032388e0144943a20a166")
+                        .contentType(ContentType.JSON) // gönderilecek data JSON
+                        .body("{\"name\":\""+rndFullname+"\", \"gender\":\"male\", \"email\":\""+rndEmail+"\", \"status\":\"active\"}")
+                        .log().uri()
+                        .log().body()
 
-              .then()
-              .statusCode(201)
-              .contentType(ContentType.JSON)
-              .extract().path("id")
-      ;
+                        .when()
+                        .post("https://gorest.co.in/public/v2/users")
+
+                        .then()
+                        .log().body()
+                        .statusCode(201)
+                        .contentType(ContentType.JSON)
+                        .extract().path("id");
     }
 
     @Test
-    public void getUserByID(){
-
-    }
-
-    @Test
-    public void updateUser(){
-
-    }
-
-    @Test
-    public void deleteUser(){
+    public void getUserByID() {
 
     }
 
     @Test
-    public void deleteUserNegative(){
+    public void updateUser() {
 
     }
 
+    @Test
+    public void deleteUser() {
+
+    }
+
+    @Test
+    public void deleteUserNegative() {
+
+    }
 
 
 }
