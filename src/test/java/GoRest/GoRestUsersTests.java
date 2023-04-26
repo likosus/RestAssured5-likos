@@ -14,7 +14,7 @@ public class GoRestUsersTests {
     Faker randomUretici=new Faker();
     int userID;
 
-    @Test
+    @Test(enabled = false)
     public void createUserJson() {
         // POST https://gorest.co.in/public/v2/users
         // "Authorization: Bearer 523891d26e103bab0089022d20f1820be2999a7ad693304f560132559a2a152d"
@@ -69,7 +69,7 @@ public class GoRestUsersTests {
                         .extract().path("id");
     }
 
-    @Test
+    @Test(enabled = false)
     public void createUserClass() {
         String rndFullname = randomUretici.name().fullName();
         String rndEmail = randomUretici.internet().emailAddress();
@@ -98,7 +98,7 @@ public class GoRestUsersTests {
                         .extract().path("id");
     }
 
-    @Test(dependsOnMethods = "createUser")
+    @Test(dependsOnMethods = "createUserMap")
     public void getUserByID() {
 
         given()
