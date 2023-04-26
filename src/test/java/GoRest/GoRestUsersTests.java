@@ -14,16 +14,22 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class GoRestUsersTests {
-    Faker randomUretici=new Faker();
+    Faker randomUretici = new Faker();
     int userID;
 
     RequestSpecification reqSpec;
+
     @BeforeClass
-    public void setup(){
+    public void setup() {
+
+        baseURI = "https://gorest.co.in/public/v2/users";
+        //baseURI ="https://test.gorest.co.in/public/v2/users/";
+
         reqSpec = new RequestSpecBuilder()
-               .addHeader("Authorization", "Bearer e4b22047188da067d3bd95431d94259f63896347f9864894a0a7013ee5f9c703")
-               .setContentType(ContentType.JSON)
-               .build();
+                .addHeader("Authorization", "Bearer e4b22047188da067d3bd95431d94259f63896347f9864894a0a7013ee5f9c703")
+                .setContentType(ContentType.JSON)
+                .setBaseUri(baseURI)
+                .build();
 
     }
 
@@ -39,12 +45,12 @@ public class GoRestUsersTests {
         userID =
                 given()
                         .spec(reqSpec)
-                        .body("{\"name\":\""+rndFullname+"\", \"gender\":\"male\", \"email\":\""+rndEmail+"\", \"status\":\"active\"}")
+                        .body("{\"name\":\"" + rndFullname + "\", \"gender\":\"male\", \"email\":\"" + rndEmail + "\", \"status\":\"active\"}")
                         //.log().uri()
                         //.log().body()
 
                         .when()
-                        .post("https://gorest.co.in/public/v2/users")
+                        .post("")
 
                         .then()
                         .log().body()
@@ -55,24 +61,27 @@ public class GoRestUsersTests {
 
     @Test
     public void createUserMap() {
+
+        System.out.println("baseURI = " + baseURI);
         String rndFullname = randomUretici.name().fullName();
         String rndEmail = randomUretici.internet().emailAddress();
 
-        Map<String,String> newUser=new HashMap<>();
-        newUser.put("name",rndFullname);
-        newUser.put("gender","male");
-        newUser.put("email",rndEmail);
-        newUser.put("status","active");
+        Map<String, String> newUser = new HashMap<>();
+        newUser.put("name", rndFullname);
+        newUser.put("gender", "male");
+        newUser.put("email", rndEmail);
+        newUser.put("status", "active");
 
         userID =
                 given()
-                        .spec(reqSpec)
+                        .header("Authorization", "Bearer e4b22047188da067d3bd95431d94259f63896347f9864894a0a7013ee5f9c703")
+                        .contentType(ContentType.JSON)
                         .body(newUser)
-                        //.log().uri()
+                        .log().uri()
                         //.log().body()
 
                         .when()
-                        .post("https://gorest.co.in/public/v2/users")
+                        .post("")
 
                         .then()
                         .log().body()
@@ -86,11 +95,11 @@ public class GoRestUsersTests {
         String rndFullname = randomUretici.name().fullName();
         String rndEmail = randomUretici.internet().emailAddress();
 
-        User newUser=new User();
-        newUser.name=rndFullname;
-        newUser.gender="male";
-        newUser.email=rndEmail;
-        newUser.status="active";
+        User newUser = new User();
+        newUser.name = rndFullname;
+        newUser.gender = "male";
+        newUser.email = rndEmail;
+        newUser.status = "active";
 
         userID =
                 given()
@@ -100,7 +109,7 @@ public class GoRestUsersTests {
                         //.log().body()
 
                         .when()
-                        .post("https://gorest.co.in/public/v2/users")
+                        .post("")
 
                         .then()
                         .log().body()
@@ -116,28 +125,28 @@ public class GoRestUsersTests {
                 .spec(reqSpec)
 
                 .when()
-                .get("https://gorest.co.in/public/v2/users/"+userID)
+                .get("" + userID)
 
                 .then()
                 .log().body()
                 .statusCode(200)
                 .contentType(ContentType.JSON)
-                .body("id",equalTo(userID))
+                .body("id", equalTo(userID))
         ;
     }
 
     @Test(dependsOnMethods = "getUserByID")
     public void updateUser() {
 
-        Map<String,String> updateUser=new HashMap<>();
-        updateUser.put("name","ismet temur");
+        Map<String, String> updateUser = new HashMap<>();
+        updateUser.put("name", "ismet temur");
 
         given()
                 .spec(reqSpec)
                 .body(updateUser)
 
                 .when()
-                .put("https://gorest.co.in/public/v2/users/"+userID)
+                .put("" + userID)
 
                 .then()
                 .log().body()
@@ -147,12 +156,12 @@ public class GoRestUsersTests {
         ;
     }
 
-    @Test
+    @Test(dependsOnMethods = "updateUser")
     public void deleteUser() {
 
     }
 
-    @Test
+    @Test(dependsOnMethods = "deleteUser")
     public void deleteUserNegative() {
 
     }
