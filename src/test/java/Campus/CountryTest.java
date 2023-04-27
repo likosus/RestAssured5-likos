@@ -125,9 +125,40 @@ public class CountryTest {
     }
 
     @Test(dependsOnMethods = "updateCountry")
-    public void deleteCountry()  {  }
+    public void deleteCountry()  {
+
+        given()
+                .spec(recSpec)
+                .pathParam("countryID", countryID)
+                .log().uri()
+
+                .when()
+                .delete("/school-service/api/countries/{countryID}")
+
+                .then()
+                .log().body() // gelen body yi log olarak göster
+                .statusCode(200)
+        ;
+
+    }
 
     @Test(dependsOnMethods = "deleteCountry")
-    public void deleteCountryNegative()  {  }
+    public void deleteCountryNegative()  {
+
+        given()
+                .spec(recSpec)
+                .pathParam("countryID", countryID)
+                .log().uri()
+
+                .when()
+                .delete("/school-service/api/countries/{countryID}")
+
+                .then()
+                .log().body() // gelen body yi log olarak göster
+                .statusCode(400)
+                .body("message",equalTo("Country not found"))
+        ;
+
+    }
 
 }
