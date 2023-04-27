@@ -184,5 +184,6 @@ public class GoRestUsersTests {
                 .statusCode(404);
     }
 
-
+     // TODO :HaftaSonu TODO:  GoRest de daha önce yaptığınız posts ve comments resourcelarını
+     // TODO  API Automation yapınız(Create,get,update,delete,deletenegatife)
 }
