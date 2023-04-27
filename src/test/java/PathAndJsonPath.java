@@ -65,8 +65,8 @@ public class PathAndJsonPath {
         System.out.println("idPath = " + idPath);
         System.out.println("idJsonPath = " + idJsonPath);
 
-        User[] usersPath= response.as(User[].class);
-        List<User> usersJsonPath= response.jsonPath().getList("", User.class);
+        User[] usersPath= response.as(User[].class); // as nesne dönüşümünde (POJO) dizi destekli
+        List<User> usersJsonPath= response.jsonPath().getList("", User.class); // JsonPath ise List olarak verebiliyor
 
         System.out.println("usersPath = " + Arrays.toString(usersPath));
         System.out.println("usersJsonPath = " + usersJsonPath);
