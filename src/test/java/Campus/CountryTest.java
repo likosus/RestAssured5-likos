@@ -16,7 +16,10 @@ import static org.hamcrest.Matchers.*;
 
 public class CountryTest {
 
+    Faker faker=new Faker();
     String countryID;
+
+    String countryName;
     RequestSpecification recSpec;
 
     @BeforeClass
@@ -50,11 +53,11 @@ public class CountryTest {
 
     @Test
     public void createCountry()  {
-        Faker faker=new Faker();
 
         Map<String,String> country=new HashMap<>();
-        country.put("name",faker.address().country());
-        country.put("code",faker.address().countryCode());
+        countryName=faker.address().country()+faker.number().digits(5);
+        country.put("name",countryName);
+        country.put("code",faker.address().countryCode()+faker.number().digits(5));
 
         countryID=
         given()
@@ -75,7 +78,26 @@ public class CountryTest {
     }
 
     @Test(dependsOnMethods = "createCountry")
-    public void createCountryNegative()  {  }
+    public void createCountryNegative()  {
+
+        Map<String,String> country=new HashMap<>();
+        country.put("name",countryName);
+        country.put("code",faker.address().countryCode()+faker.number().digits(5));
+
+        given()
+                .spec(recSpec)
+                .body(country)
+                .log().body()
+
+                .when()
+                .post("/school-service/api/countries")
+
+                .then()
+                .log().body()
+                .statusCode(400)
+                .body("message", containsString("already"))
+        ;
+    }
 
     @Test(dependsOnMethods = "createCountryNegative")
     public void updateCountry()  {  }
