@@ -1,11 +1,20 @@
 package GoRest;
 
 public class User {
+
+    int id;
     String name;
     String gender;
     String email;
     String status;
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public void setName(String name) {
         this.name = name;
