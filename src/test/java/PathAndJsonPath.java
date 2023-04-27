@@ -1,10 +1,13 @@
 
 import GoRest.User;
+import Model.Location;
+import Model.Place;
 import io.restassured.response.Response;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import static io.restassured.RestAssured.*;
 
@@ -101,8 +104,37 @@ public class PathAndJsonPath {
         // jsonPath : class dönüşümüne ve tip dönüşümüne izin vererek , veriyi istediğimiz formatta verir.
     }
 
+    @Test
+    public void getZipCode(){
+        Response response=
+        given()
+
+                .when()
+                .get("http://api.zippopotam.us/us/90210")
+
+                .then()
+                //.log().body()
+                .extract().response()
+        ;
+
+        Location locPathAs = response.as(Location.class); // Bütün classları yazmak zorundasın
+        System.out.println("locPathAs.get = " + locPathAs.getPlaces());
+
+        List<Place> places= response.jsonPath().getList("places", Place.class); // nokta atışı istediğimiz nesneyi aldık.
+        System.out.println("places = " + places);
+    }
 
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
