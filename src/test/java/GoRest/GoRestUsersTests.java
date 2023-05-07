@@ -26,7 +26,7 @@ public class GoRestUsersTests {
         //baseURI ="https://test.gorest.co.in/public/v2/users/";
 
         reqSpec = new RequestSpecBuilder()
-                .addHeader("Authorization", "Bearer e4b22047188da067d3bd95431d94259f63896347f9864894a0a7013ee5f9c703")
+                .addHeader("Authorization", "Bearer 2196a2fd7ad2b0d761d8237e0870a793f7970a4e8043c00fa00feb65bc5d29b7")
                 .setContentType(ContentType.JSON)
                 .build();
 
@@ -73,7 +73,7 @@ public class GoRestUsersTests {
 
         userID =
                 given()
-                        .header("Authorization", "Bearer e4b22047188da067d3bd95431d94259f63896347f9864894a0a7013ee5f9c703")
+                        .header("Authorization", "Bearer 2196a2fd7ad2b0d761d8237e0870a793f7970a4e8043c00fa00feb65bc5d29b7")
                         .contentType(ContentType.JSON)
                         .body(newUser)
                         .log().uri()
@@ -138,7 +138,7 @@ public class GoRestUsersTests {
     public void updateUser() {
 
         Map<String, String> updateUser = new HashMap<>();
-        updateUser.put("name", "ismet temur");
+        updateUser.put("name", "Mustafa Likos");
 
         given()
                 .spec(reqSpec)
@@ -152,7 +152,7 @@ public class GoRestUsersTests {
                 .log().body()
                 .statusCode(200)
                 .body("id", equalTo(userID))
-                .body("name", equalTo("ismet temur"))
+                .body("name", equalTo("Mustafa Likos"))
         ;
     }
 

@@ -200,7 +200,7 @@ public class ZippoTest {
                     .then()
                     .statusCode(200)
                     .log().body()
-                    .body("meta.pagination.page", equalTo(i))
+                    .body("meta.pagination.page", equalTo(i)) //{"meta":{"pagination":{"total":2969,"pages":297,"page":1
             ;
         }
 
@@ -359,8 +359,8 @@ public class ZippoTest {
         System.out.println("names = " + names);
         System.out.println("limit = " + limit);
 
-        Assert.assertTrue(names.contains("Dakshayani Pandey"));
-        Assert.assertTrue(idler.contains(1203767));
+        Assert.assertTrue(names.contains("Chandrabhan Chattopadhyay"));
+        Assert.assertTrue(idler.contains(1301528));
         Assert.assertEquals(limit, 10, "test sonucu hatalı");
     }
 
